@@ -52,8 +52,6 @@
 
             document.getElementById('principal').style.display = 'block';
             document.getElementById('h5-bem-vindo').style.display = 'none';
-            
-
         })
         .catch(error => console.log('error', error));
 
@@ -62,7 +60,7 @@
             document.getElementById('btn-salvar').style.display = 'none';
 
             var item = {
-                "id": Math.random().toString().replace('.', ''),
+                "id": perguntas.length + 1,
                 "pergunta": document.getElementById('pergunta').value,
                 "avaliada": false,
                 "aprovada": false
