@@ -23,43 +23,48 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script>
+        
         var perguntas = [];
+
         var myHeaders = new Headers();
         myHeaders.append("X-Master-Key", "$2b$10$wsWfBEOc1scRz1w70BusTOwnRqEkhaO2Sj2UPaDpKPyp.ElnbxauO");
         myHeaders.append("Content-Type", "application/json");
 
-        var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,        
-        redirect: 'follow'
-        };
+        setInterval(() => {
+            
+            var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,        
+            redirect: 'follow'
+            };
 
-        fetch("https://api.jsonbin.io/v3/b/645e6b52b89b1e22999c62cb", requestOptions)
-        .then(response => response.text())
-        .then(result => {
+            fetch("https://api.jsonbin.io/v3/b/645e6b52b89b1e22999c62cb", requestOptions)
+            .then(response => response.text())
+            .then(result => {
 
-            var htmlperguntas = '';
-            var o = JSON.parse(result);
-            perguntas = o.record;
+                var htmlperguntas = '';
+                var o = JSON.parse(result);
+                perguntas = o.record;
 
-            for (let index = 0; index < o.record.length; index++) {
-                const element = o.record[index];
-                
-                if (!element.avaliada) {
-                    htmlperguntas += `
-                    <tr id="`+element.id+`">
-                        <td>`+ element.pergunta +`</td>   
-                        <td>
-                            <button type="button" class="btn btn-success" onclick="aprovar('`+element.id+`')">Enviar</button>
-                            <button type="button" class="btn btn-danger" onclick="recusar('`+element.id+`')">Recusar</button>
-                        </td>         
-                    </tr>`;
+                for (let index = 0; index < o.record.length; index++) {
+                    const element = o.record[index];
+                    
+                    if (!element.avaliada) {
+                        htmlperguntas += `
+                        <tr id="`+element.id+`">
+                            <td>`+ element.pergunta +`</td>   
+                            <td>
+                                <button type="button" class="btn btn-success" onclick="aprovar('`+element.id+`')">Enviar</button>
+                                <button type="button" class="btn btn-danger" onclick="recusar('`+element.id+`')">Recusar</button>
+                            </td>         
+                        </tr>`;
+                    }
                 }
-            }
 
-            document.getElementById('tbody-perguntas').innerHTML = htmlperguntas;
-        })
-        .catch(error => console.log('error', error));
+                document.getElementById('tbody-perguntas').innerHTML = htmlperguntas;
+            })
+            .catch(error => console.log('error', error));
+        }, 60000);
       
         function aprovar(idpergunta) {
             
@@ -82,7 +87,7 @@
             fetch("https://api.jsonbin.io/v3/b/645e6b52b89b1e22999c62cb", requestOptions)
             .then(response => response.text())
             .then(result => {
-            document.getElementById(idpergunta).style.display = 'none';
+                document.getElementById(idpergunta).style.display = 'none';
             })
             .catch(error => {
             console.log(error);
